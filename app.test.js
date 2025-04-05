@@ -4,7 +4,7 @@ const cheerio = require('cheerio');
 const path = require('path');
 
 const app = express();
-const PORT = 3001;
+const PORT = 3099;
 
 // Middleware to parse request bodies
 app.use(express.json());
@@ -30,29 +30,7 @@ app.post('/fetch', async (req, res) => {
     const html = response.data;
 
     // Use cheerio to parse HTML and selectively replace text content, not URLs
-    const $ = cheerio.load(html, { decodeEntities: false });
-
-    // Update all relative URLs to absolute URLs
-    $('link[rel="stylesheet"]').each((i, el) => {
-      const href = $(el).attr('href');
-      if (href && !href.startsWith('http')) {
-        $(el).attr('href', new URL(href, url).href);
-      }
-    });
-
-    $('script').each((i, el) => {
-      const src = $(el).attr('src');
-      if (src && !src.startsWith('http')) {
-        $(el).attr('src', new URL(src, url).href);
-      }
-    });
-
-    $('img').each((i, el) => {
-      const src = $(el).attr('src');
-      if (src && !src.startsWith('http')) {
-        $(el).attr('src', new URL(src, url).href);
-      }
-    });
+    const $ = cheerio.load(html);
     
     // Function to replace text but skip URLs and attributes
     function replaceYaleWithFale(i, el) {
@@ -84,7 +62,7 @@ app.post('/fetch', async (req, res) => {
     // Process title separately
     const title = $('title').text().replace(/Yale/g, 'Fale').replace(/yale/g, 'fale');
     $('title').text(title);
-
+    
     return res.json({ 
       success: true, 
       content: $.html(),
