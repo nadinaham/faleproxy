@@ -81,16 +81,16 @@ app.post('/fetch', async (req, res) => {
       }
     });
     
-    // // Process title separately
-    // const title = $('title').text().replace(/Yale/g, 'Fale').replace(/yale/g, 'fale');
-    // $('title').text(title);
+    // Process title separately
+    const title = $('title').text().replace(/Yale/g, 'Fale').replace(/yale/g, 'fale');
+    $('title').text(title);
 
-    // return res.json({ 
-    //   success: true, 
-    //   content: $.html(),
-    //   title: title,
-    //   originalUrl: url
-    // });
+    return res.json({ 
+      success: true, 
+      content: $.html(),
+      title: title,
+      originalUrl: url
+    });
   } catch (error) {
     console.error('Error fetching URL:', error.message);
     return res.status(500).json({ 
