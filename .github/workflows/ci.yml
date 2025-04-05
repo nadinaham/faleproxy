@@ -28,6 +28,8 @@ jobs:
       
     - name: Run tests
       run: npm run test:ci
+      id: test-run
+      continue-on-error: false
       
     - name: Upload coverage report
       uses: actions/upload-artifact@v3
@@ -37,7 +39,10 @@ jobs:
         
   deploy:
     needs: test
-    if: (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && success()
+    if: |
+      always() &&
+      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') &&
+      needs.test.result == 'success'
     runs-on: ubuntu-latest
     
     steps:
