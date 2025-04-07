@@ -31,6 +31,8 @@ app.post('/fetch', async (req, res) => {
 
     // Use cheerio to parse HTML and selectively replace text content, not URLs
     const $ = cheerio.load(html);
+
+    console.log("hello");
     
     // Function to replace text but skip URLs and attributes
     function replaceYaleWithFale(i, el) {
