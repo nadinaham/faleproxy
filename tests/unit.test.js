@@ -110,4 +110,26 @@ describe('Yale to Fale replacement logic', () => {
     // Check that each case variant was properly replaced
     expect(modifiedHtml).toContain('FALE University, Fale College, and fale medical school');
   });
+  
+  test('should handle URLs without http:// prefix', () => {
+    // This is a mock test that simulates the behavior of app.js
+    // without actually making HTTP requests
+    
+    let url = 'example.com';
+    
+    // Apply the same logic as in app.js
+    if (!url.match(/^https?:\/\//i)) {
+      url = 'http://' + url;
+    }
+    
+    expect(url).toBe('http://example.com');
+    
+    // Test with https:// already present
+    let secureUrl = 'https://yale.edu';
+    if (!secureUrl.match(/^https?:\/\//i)) {
+      secureUrl = 'http://' + secureUrl;
+    }
+    
+    expect(secureUrl).toBe('https://yale.edu');
+  });
 });

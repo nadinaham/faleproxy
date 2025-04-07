@@ -40,7 +40,19 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // Update the info bar
             originalUrlElement.textContent = url;
-            originalUrlElement.href = url;
+            
+            // Ensure the URL has http:// prefix for the href attribute
+            let hrefUrl = url;
+            if (!hrefUrl.match(/^https?:\/\//i)) {
+                hrefUrl = 'http://' + hrefUrl;
+            }
+            originalUrlElement.href = hrefUrl;
+            
+            // Use the modified URL from the response if available
+            if (data.modifiedUrl) {
+                originalUrlElement.href = data.modifiedUrl;
+            }
+            
             pageTitleElement.textContent = data.title || 'No title';
             
             // Create a sandboxed iframe to display the content

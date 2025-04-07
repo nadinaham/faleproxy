@@ -19,10 +19,15 @@ app.get('/', (req, res) => {
 // API endpoint to fetch and modify content
 app.post('/fetch', async (req, res) => {
   try {
-    const { url } = req.body;
+    let { url } = req.body;
     
     if (!url) {
       return res.status(400).json({ error: 'URL is required' });
+    }
+    
+    // Add http:// prefix if not already specified
+    if (!url.match(/^https?:\/\//i)) {
+      url = 'http://' + url;
     }
 
     // Fetch the content from the provided URL
@@ -75,7 +80,8 @@ app.post('/fetch', async (req, res) => {
       success: true, 
       content: $.html(),
       title: title,
-      originalUrl: url
+      originalUrl: url,
+      modifiedUrl: url // Include the URL with http:// added if it was modified
     });
   } catch (error) {
     console.error('Error fetching URL:', error.message);
